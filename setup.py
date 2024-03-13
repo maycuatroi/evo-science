@@ -1,4 +1,5 @@
 """Python setup.py for evo_science package"""
+
 import io
 import os
 from setuptools import find_packages, setup
@@ -39,8 +40,6 @@ setup(
     author="maycuatroi",
     packages=find_packages(exclude=["tests", ".github"]),
     install_requires=read_requirements("requirements.txt"),
-    entry_points={
-        "console_scripts": ["evo_science = evo_science.__main__:main"]
-    },
+    entry_points={"console_scripts": ["evo_science = evo_science.__main__:main"]},
     extras_require={"test": read_requirements("requirements-test.txt")},
 )
