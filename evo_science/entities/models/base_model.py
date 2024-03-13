@@ -43,7 +43,7 @@ class BaseModel:
         x: FeatureSet,
         y: FeatureSet,
         size: float = None,
-        metrics: typing.List[str | BaseMetric | type] = None,
+        metrics: typing.List["str | BaseMetric | type"] = None,
         **kwargs,
     ):
         """

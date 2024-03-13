@@ -31,7 +31,7 @@ def read_requirements(path):
 
 
 setup(
-    name="evo_science",
+    name="evo-science",
     version=read("evo_science", "VERSION"),
     description="Awesome evo_science created by maycuatroi",
     url="https://github.com/maycuatroi/evo-science/",

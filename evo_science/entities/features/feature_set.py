@@ -11,7 +11,7 @@ from evo_science.entities.cpa_logger import EvoScienceLogger
 class FeatureSet:
     def __init__(
         self,
-        features: typing.List[BaseFeature | type],
+        features: typing.List["BaseFeature | type"],
         auto_skip_nan: bool = True,
         parents=None,
     ):
