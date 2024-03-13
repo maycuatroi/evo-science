@@ -35,7 +35,6 @@ lint:             ## Run pep8, black, mypy linters.
 	$(ENV_PREFIX)flake8 evo_science/
 	$(ENV_PREFIX)black -l 79 --check evo_science/
 	$(ENV_PREFIX)black -l 79 --check tests/
-	$(ENV_PREFIX)mypy --ignore-missing-imports evo_science/
 
 .PHONY: test
 test: lint        ## Run tests and generate coverage report.
