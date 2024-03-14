@@ -19,21 +19,7 @@ class XGBoost(BaseModel):
         self.model.fit(x.to_numpy(), y.to_numpy())
 
     def plot(self, x: FeatureSet, y: FeatureSet):
-        x_data = x.to_numpy(is_train=False)
-        y_data = y.to_numpy(is_train=False)
-
-        viz = dtreeviz(
-            self.model,
-            x_data,
-            y_data,
-            tree_index=0,
-            target_name=y.column_names[0],
-            orientation="LR",  # left-right orientation
-            feature_names=x.column_names,
-            class_names=y.column_names,
-            X=x_data,
-        )
-        plt.show()
+        raise NotImplementedError("XGBoost does not support plotting")
 
     def _calculate_coefficients(self, x: FeatureSet):
         coef = self.model.feature_importances_

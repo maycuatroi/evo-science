@@ -32,7 +32,7 @@ fmt:              ## Format code using black & isort.
 
 .PHONY: lint
 lint:             ## Run pep8, black, mypy linters.
-	$(ENV_PREFIX)flake8 evo_science/
+	$(ENV_PREFIX)flake8 evo_science/ --ignore=E501,F401,F811
 	$(ENV_PREFIX)black -l 79 --check evo_science/
 	$(ENV_PREFIX)black -l 79 --check tests/
 

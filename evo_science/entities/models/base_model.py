@@ -57,12 +57,6 @@ class BaseModel:
         Returns:
             float: Mean Squared Error of the model predictions.
         """
-        x_data = x.to_numpy(is_train=False)
-        y_data = y.to_numpy(is_train=False)
-        if size:
-            x_data = x_data[: int(len(x_data) * size)]
-            y_data = y_data[: int(len(y_data) * size)]
-        y_pred = self.predict(x_data)
         table_records = []
         for i, metric in enumerate(metrics):
             if isinstance(metric, str):
