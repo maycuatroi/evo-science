@@ -5,7 +5,7 @@ import pandas as pd
 from tabulate import tabulate
 
 from evo_science import BaseFeature
-from evo_science.entities.cpa_logger import EvoScienceLogger
+from evo_science.entities.evs_logger import EvoScienceLogger
 
 
 class FeatureSet:
