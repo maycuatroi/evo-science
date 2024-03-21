@@ -1,10 +1,12 @@
+import numpy as np
+
 from evo_science.entities.metrics import BaseMetric
 
 
 class Accuracy(BaseMetric):
     name = "Accuracy"
 
-    def _calculate_np(self, y_true, y_pred):
+    def _calculate_np(self, y_true: np.array, y_pred: np.array):
         y_pred[y_true > self.threshold] = 1
         y_pred[y_true <= self.threshold] = 0
         return (y_true == y_pred).mean()
