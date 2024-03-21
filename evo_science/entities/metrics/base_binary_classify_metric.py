@@ -1,6 +1,6 @@
 import numpy as np
 
-from evo_science.entities.metrics import BaseMetric
+from evo_science.entities.metrics.base_metric import BaseMetric
 
 
 class BaseBinaryClassifyMetric(BaseMetric):
