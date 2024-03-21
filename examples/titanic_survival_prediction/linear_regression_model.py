@@ -49,7 +49,18 @@ def example_lr_model():
 
     model.fit(x=x, y=y)
     model.evaluate(
-        x=x, y=y, metrics=[Slope, ErrorStd, Accuracy(threshold=0.5), Precision, F1Score]
+        x=x,
+        y=y,
+        metrics=[
+            Slope,
+            ErrorStd,
+            Accuracy(threshold=0.5),
+            Precision,
+            Recall,
+            F1Score,
+            RocCurve,
+            AUC,
+        ],
     )
     model.calculate_coefficients(x=x)
 
