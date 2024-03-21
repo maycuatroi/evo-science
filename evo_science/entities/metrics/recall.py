@@ -1,6 +1,6 @@
 import numpy as np
 
-from evo_science.entities.metrics.base_binary_classify_metric import BaseBinaryClassifyMetric
+from .base_binary_classify_metric import BaseBinaryClassifyMetric
 
 
 class Recall(BaseBinaryClassifyMetric):
