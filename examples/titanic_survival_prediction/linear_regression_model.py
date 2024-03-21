@@ -48,7 +48,9 @@ def example_lr_model():
     )
 
     model.fit(x=x, y=y)
-    model.evaluate(x=x, y=y, metrics=[Slope, ErrorStd, Accuracy(threshold=0.5)])
+    model.evaluate(
+        x=x, y=y, metrics=[Slope, ErrorStd, Accuracy(threshold=0.5), Precision]
+    )
     model.calculate_coefficients(x=x)
 
     # model.plot(x=x, y=y)

@@ -14,3 +14,27 @@ class BaseBinaryClassifyMetric(BaseMetric):
         y_pred[y_pred > self.threshold] = 1
         y_pred[y_pred <= self.threshold] = 0
         return y_pred
+
+    def calculate_tp(self, y_true, y_pred):
+        """
+        Calculate the number of true positives.
+        """
+        return np.sum((y_true == 1) & (y_pred == 1))
+
+    def calculate_fp(self, y_true, y_pred):
+        """
+        Calculate the number of false positives.
+        """
+        return np.sum((y_true == 0) & (y_pred == 1))
+
+    def calculate_tn(self, y_true, y_pred):
+        """
+        Calculate the number of true negatives.
+        """
+        return np.sum((y_true == 0) & (y_pred == 0))
+
+    def calculate_fn(self, y_true, y_pred):
+        """
+        Calculate the number of false negatives.
+        """
+        return np.sum((y_true == 1) & (y_pred == 0))
