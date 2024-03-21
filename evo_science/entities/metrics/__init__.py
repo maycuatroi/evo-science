@@ -6,3 +6,4 @@ from .error_ave import ErrorAve
 from .r_squared import RSquared
 from .error_ave import ErrorAve
 from .error_std import ErrorStd
+from .accuracy import Accuracy

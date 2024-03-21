@@ -1,6 +1,6 @@
 from evo_science import FEATURE_TYPES, FeatureSet
 from evo_science.entities.features.base_feature import BaseFeature
-from evo_science.entities.metrics import Slope, ErrorStd
+from evo_science.entities.metrics import *
 from evo_science.entities.models.linear_regression_model import LinearRegressionModel
 
 
@@ -48,7 +48,7 @@ def example_lr_model():
     )
 
     model.fit(x=x, y=y)
-    model.evaluate(x=x, y=y, metrics=[Slope, ErrorStd])
+    model.evaluate(x=x, y=y, metrics=[Slope, ErrorStd, Accuracy(threshold=0.5)])
     model.calculate_coefficients(x=x)
 
     # model.plot(x=x, y=y)

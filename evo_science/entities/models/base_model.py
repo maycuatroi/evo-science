@@ -64,6 +64,10 @@ class BaseModel:
                 metrics[i] = metric(model=self, feature_set=x, target_feature=y)
             elif isinstance(metric, type):
                 metrics[i] = metric(model=self, feature_set=x, target_feature=y)
+            elif issubclass(metric.__class__, BaseMetric):
+                metric.model = self
+                metric.feature_set = x
+                metric.target_feature = y
             else:
                 assert issubclass(
                     metric.__class__, BaseMetric
