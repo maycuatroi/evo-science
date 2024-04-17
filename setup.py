@@ -41,5 +41,9 @@ setup(
     packages=find_packages(exclude=["tests", ".github"]),
     install_requires=read_requirements("requirements.txt"),
     entry_points={"console_scripts": ["evo_science = evo_science.__main__:main"]},
-    extras_require={"test": read_requirements("requirements-test.txt")},
+    extras_require={
+        "test": read_requirements("requirements-test.txt"),
+        "keras": read_requirements("requirements-keras.txt"),
+        "full": read_requirements("requirements-full.txt"),
+    },
 )

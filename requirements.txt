@@ -5,3 +5,4 @@ dtreeviz
 tabulate
 seaborn
 pandas
+python-dotenv

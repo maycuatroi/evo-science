@@ -115,7 +115,23 @@ init:             ## Initialize the project based on an application template.
 	@./.github/init.sh
 
 
-# This project has been generated from rochacbruno/python-project-template
-# __author__ = 'rochacbruno'
-# __repo__ = https://github.com/rochacbruno/python-project-template
-# __sponsor__ = https://github.com/sponsors/rochacbruno/
+install-keras:
+	@echo "Installing Keras..."
+	sudo apt-get update -y
+	sudo apt-get install graphviz -y
+	pip install -r requirements.txt
+	@echo "Done."
+
+create-requirement-full:
+	@echo "Creating requirements.txt..."
+	@echo "Reading requirements.txt..."
+	@cat requirements.txt >> requirements-full.txt
+	@echo "Reading requirements-test.txt..."
+	@cat requirements-test.txt >> requirements-full.txt
+	@echo "Reading requirements-keras.txt..."
+	@cat requirements-keras.txt >> requirements-full.txt
+	@echo "requirements-full.txt created."
+
+release:
+	@echo "Creating release"
+	python scripts/create-new-release.py

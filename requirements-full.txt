@@ -1,0 +1,19 @@
+scikit-learn
+matplotlib
+xgboost
+dtreeviz
+tabulate
+seaborn
+pandas# This requirements are for development and testing only, not for production.
+pytest
+coverage
+flake8
+black
+isort
+pytest-cov
+codecov
+mypy
+gitchangelog
+mkdocs
+jax[cuda12_pip]
+keras

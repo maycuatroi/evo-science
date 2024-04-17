@@ -1,0 +1,2 @@
+jax[cuda12_pip]
+keras
