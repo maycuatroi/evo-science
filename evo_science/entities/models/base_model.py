@@ -9,7 +9,6 @@ from evo_science.metric_lib import MetricLib
 
 
 class BaseModel:
-
     def __init__(self, **kwargs):
         self.model = None
 
@@ -78,9 +77,7 @@ class BaseModel:
             table_records.append([metric.name, metric_value])
 
         table = tabulate(
-            tabular_data=table_records,
-            headers=["Metric", "Value"],
-            tablefmt="orgtbl",
+            tabular_data=table_records, headers=["Metric", "Value"], tablefmt="orgtbl",
         )
         print(table)
 

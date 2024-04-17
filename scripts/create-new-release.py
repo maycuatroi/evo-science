@@ -38,6 +38,25 @@ def bump_version(version):
     subprocess.run(["git", "config", "user.email", email])
     subprocess.run(["git", "config", "user.name", username])
 
+    # add git token to avoid password prompt
+    current_origin_url = subprocess.run(
+        ["git", "remote", "get-url", "origin"], capture_output=True
+    ).stdout.decode()
+    if "@" not in current_origin_url:
+        if current_origin_url.startswith("git@"):
+            current_origin_url = current_origin_url.replace("git@", "https://")
+            current_origin_url = current_origin_url.replace(":", "/")
+        elif current_origin_url.startswith("https://"):
+            current_origin_url = current_origin_url.replace(
+                "https://", f"https://{github_token}@"
+            )
+        if not current_origin_url.endswith(".git"):
+            current_origin_url += ".git"
+        new_origin_url = current_origin_url.replace(
+            "https://", f"https://{github_token}:{github_token}@"
+        )
+        subprocess.run(["git", "remote", "set-url", "origin", new_origin_url])
+
     # commit the change
     subprocess.run(["git", "add", version_path])
     subprocess.run(["git", "commit", "-m", f"Bump version to {version}"])
