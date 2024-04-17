@@ -44,6 +44,5 @@ setup(
     extras_require={
         "test": read_requirements("requirements-test.txt"),
         "keras": read_requirements("requirements-keras.txt"),
-        "full": read_requirements("requirements-full.txt"),
     },
 )
