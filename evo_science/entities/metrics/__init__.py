@@ -12,3 +12,4 @@ from .recall import Recall
 from .rmse import RMSE
 from .roc_curve import RocCurve
 from .slope import Slope
+from .wape import WAPE

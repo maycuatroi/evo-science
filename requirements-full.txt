@@ -4,7 +4,7 @@ xgboost
 dtreeviz
 tabulate
 seaborn
-pandas# This requirements are for development and testing only, not for production.
+pandas
 pytest
 coverage
 flake8

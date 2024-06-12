@@ -131,7 +131,3 @@ create-requirement-full:
 	@echo "Reading requirements-keras.txt..."
 	@cat requirements-keras.txt >> requirements-full.txt
 	@echo "requirements-full.txt created."
-
-release:
-	@echo "Creating release"
-	python scripts/create-new-release.py
