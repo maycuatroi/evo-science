@@ -4,6 +4,7 @@ Changelog
 
 (unreleased)
 ------------
+- Release: version  🚀 [Nguyễn Anh Bình]
 - - add metric compute WAPE. [Nguyễn Anh Bình]
 - - add metric compute WAPE. [Nguyễn Anh Bình]
 
