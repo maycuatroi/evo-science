@@ -4,6 +4,12 @@ Changelog
 
 (unreleased)
 ------------
+- - release v0.1.14. [Nguyễn Anh Bình]
+
+
+0.1.13 (2024-06-12)
+-------------------
+- Release: version  🚀 [Nguyễn Anh Bình]
 - Release: version  🚀 [Nguyễn Anh Bình]
 - - add metric compute WAPE. [Nguyễn Anh Bình]
 - - add metric compute WAPE. [Nguyễn Anh Bình]
