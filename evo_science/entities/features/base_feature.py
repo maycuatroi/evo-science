@@ -28,6 +28,11 @@ class BaseFeature:
     def encode(self, x: np.array) -> np.array:
         if self.column_type == "category":
             return self.encode_category(x)
+        elif self.column_type == list or self.column_type == "list":
+            # convert string to list "[1, 2, 3]" -> [1, 2, 3]
+            data = list(map(eval, x))
+            raise NotImplementedError("List encoding is not implemented yet.")
+
         return x.astype(self.column_type)
 
     def build(self, df):

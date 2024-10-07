@@ -6,3 +6,4 @@ tabulate
 seaborn
 pandas
 python-dotenv
+latexify-py

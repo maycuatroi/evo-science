@@ -1,13 +1,6 @@
 import pandas as pd
 import xgboost
-from dtreeviz import dtreeviz
-from matplotlib import pyplot as plt
-
-from evo_science.entities.features import FeatureSet
-
-
-class BaseModel:
-    pass
+from evo_science import BaseModel, FeatureSet
 
 
 class XGBoost(BaseModel):

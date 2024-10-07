@@ -43,9 +43,7 @@ def example_lr_model():
     x = FeatureSet(features=[PClass, Sex, Age, SibSp, Parch, Fare])
     y = FeatureSet(features=[Survived])
 
-    (x + y).build(
-        csv_path="https://web.stanford.edu/class/archive/cs/cs109/cs109.1166/stuff/titanic.csv"
-    )
+    (x + y).build(csv_path="https://web.stanford.edu/class/archive/cs/cs109/cs109.1166/stuff/titanic.csv")
 
     model.fit(x=x, y=y)
     model.evaluate(

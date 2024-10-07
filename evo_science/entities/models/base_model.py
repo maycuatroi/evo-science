@@ -4,12 +4,14 @@ import pandas as pd
 from tabulate import tabulate
 
 from evo_science import FeatureSet
+from .abstract_model import AbstractModel
 from evo_science.entities.metrics import BaseMetric
 from evo_science.metric_lib import MetricLib
 
 
-class BaseModel:
+class BaseModel(AbstractModel):
     def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.model = None
 
     def fit(self, x: FeatureSet, y: FeatureSet):
@@ -77,7 +79,9 @@ class BaseModel:
             table_records.append([metric.name, metric_value])
 
         table = tabulate(
-            tabular_data=table_records, headers=["Metric", "Value"], tablefmt="orgtbl",
+            tabular_data=table_records,
+            headers=["Metric", "Value"],
+            tablefmt="orgtbl",
         )
         print(table)
 
@@ -87,9 +91,7 @@ class BaseModel:
         """
         df_cof = self._calculate_coefficients(x)
 
-        table = tabulate(
-            tabular_data=df_cof.values, headers=df_cof.columns, tablefmt="orgtbl"
-        )
+        table = tabulate(tabular_data=df_cof.values, headers=df_cof.columns, tablefmt="orgtbl")
         print(table)
         return df_cof
 
@@ -104,6 +106,4 @@ class BaseModel:
         raise NotImplementedError
 
     def _calculate_coefficients(self, x):
-        raise NotImplementedError(
-            f"{self.__class__.__name__} does not implement _calculate_coefficients method."
-        )
+        raise NotImplementedError(f"{self.__class__.__name__} does not implement _calculate_coefficients method.")

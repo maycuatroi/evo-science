@@ -11,6 +11,7 @@ class WAPE(BaseMetric):
     Formula:
     WAPE = (sum(|y_true - y_pred|) / sum(y_true)) * 100
     """
+
     name = "WAPE"
 
     def _calculate_np(self, y_true: np.array, y_pred: np.array):
@@ -22,6 +23,3 @@ class WAPE(BaseMetric):
         sum_actual_values = np.sum(y_true)
         wape = (sum_absolute_errors / sum_actual_values) * 100
         return wape
-
-
-

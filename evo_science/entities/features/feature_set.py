@@ -30,9 +30,7 @@ class FeatureSet:
                 headers=["Feature", "Type", "Categories"],
                 tablefmt="grid",
             )
-            self.logger.info(
-                f"FeatureSet is built with the following features:\n{table}"
-            )
+            self.logger.info(f"FeatureSet is built with the following features:\n{table}")
 
     @property
     def column_names(self):
@@ -62,9 +60,7 @@ class FeatureSet:
         for feature in self.features:
             if feature.is_skip:
                 continue
-            df.loc[:, feature.column_name] = feature.encode(
-                df[feature.column_name].values
-            )
+            df.loc[:, feature.column_name] = feature.encode(df[feature.column_name].values)
         return df
 
     def build(self, csv_path=None, df=None, train_test_split=None, seed=42):
@@ -118,11 +114,7 @@ class FeatureSet:
 
     def to_numpy(self, is_train=True):
         # Adding dtype=object, for handling inhomogeneous data
-        data = [
-            feature.to_numpy(is_train=is_train)
-            for feature in self.features
-            if not feature.is_skip
-        ]
+        data = [feature.to_numpy(is_train=is_train) for feature in self.features if not feature.is_skip]
         data = np.array(data).T
         return data
 
