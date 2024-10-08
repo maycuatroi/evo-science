@@ -5,6 +5,7 @@ from evo_science.packages.yolo.layers.dark_fpn import DarkFPN
 from evo_science.packages.yolo.layers.darknet import DarkNet
 from evo_science.packages.yolo.layers.head import Head
 from evo_science.packages.yolo.layers.neck import Neck
+from evo_science.packages.yolo.losses.yolo_loss import YoloLoss
 from evo_science.packages.yolo.yolo_config import YoloConfig
 import torch
 import torch.nn as nn
@@ -65,3 +66,11 @@ class Yolo(AbstractTorchModel):
         fused_conv.bias.copy_(torch.mm(w_norm, b_conv.reshape(-1, 1)).reshape(-1) + b_norm)
 
         return fused_conv
+
+    def get_criterion(self):
+        return YoloLoss(
+            num_classes=self.num_classes,
+            num_outputs=self.num_outputs,
+            num_channels=self.num_channels,
+            stride=self.stride,
+        )
