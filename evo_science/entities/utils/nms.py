@@ -2,6 +2,8 @@ import torch
 import torchvision
 from time import time
 
+from evo_science.entities.utils import wh2xy
+
 
 class NonMaxSuppression:
     def __init__(self, conf_threshold, iou_threshold, max_wh=7680, max_det=300, max_nms=30000):
@@ -42,7 +44,7 @@ class NonMaxSuppression:
 
     def _process_candidates(self, x, nc):
         box, cls = x.split((4, nc), 1)
-        box = self._wh2xy(box)
+        box = wh2xy(box)
         if nc > 1:
             i, j = (cls > self.conf_threshold).nonzero(as_tuple=False).T
             x = torch.cat((box[i], x[i, 4 + j, None], j[:, None].float()), 1)
@@ -56,12 +58,3 @@ class NonMaxSuppression:
         boxes, scores = x[:, :4] + c, x[:, 4]
         i = torchvision.ops.nms(boxes, scores, self.iou_threshold)
         return x[i[: self.max_det]]
-
-    @staticmethod
-    def _wh2xy(x):
-        y = x.clone()
-        y[:, 0] = x[:, 0] - x[:, 2] / 2
-        y[:, 1] = x[:, 1] - x[:, 3] / 2
-        y[:, 2] = x[:, 0] + x[:, 2] / 2
-        y[:, 3] = x[:, 1] + x[:, 3] / 2
-        return y

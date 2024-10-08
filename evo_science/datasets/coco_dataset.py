@@ -16,11 +16,12 @@ from evo_science.datasets.default_augmentation import DefaultAugmentation
 from evo_science.datasets.lables.bbox_label import BBoxLabel
 from evo_science.datasets.lables.image import Image
 from evo_science.entities.vision.box_collection import BoxCollection
+from evo_science.datasets.abstract_dataset import AbstractDataset
 
-FORMATS = "bmp", "dng", "jpeg", "jpg", "mpo", "png", "tif", "tiff", "webp"
+# FORMATS = "bmp", "dng", "jpeg", "jpg", "mpo", "png", "tif", "tiff", "webp"
 
 
-class COCODataset(data.Dataset):
+class COCODataset(AbstractDataset):
     def __init__(self, data_dir, input_size=640, is_augment=True, data_type="train"):
         """
         Args:
@@ -403,6 +404,9 @@ class COCODataset(data.Dataset):
                 with zipfile.ZipFile(zip_path, "r") as zip_ref:
                     zip_ref.extractall(data_dir)
                 os.remove(zip_path)  # Remove the zip file after extraction
+
+    def get_names(self):
+        return self.categories
 
 
 if __name__ == "__main__":

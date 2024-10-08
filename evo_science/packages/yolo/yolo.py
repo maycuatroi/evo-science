@@ -16,17 +16,19 @@ class Yolo(AbstractTorchModel):
         super().__init__()
         self.backbone = DarkNet(width, depth)
         self.neck = DarkFPN(width, depth)
-        self.head = self._initialize_head(num_classes, width)
 
-    def _initialize_head(self, num_classes, width):
-        head = Head(num_classes, (width[3], width[4], width[5]))
-        with torch.no_grad():
-            dummy_input = torch.zeros(1, 3, 256, 256)
-            output = self.forward(dummy_input)
-            head.stride = nn.Parameter(torch.tensor([256 / x.shape[-2] for x in output]), requires_grad=False)
-        self.stride = head.stride
-        head.initialize_biases()
-        return head
+        self.head = Head(num_classes, (width[3], width[4], width[5]))
+        self._initialize_head(width, num_classes)
+        self.stride = self.head.stride
+
+    def _initialize_head(self, width, num_classes):
+        img_dummy = torch.zeros(1, 3, 256, 256)
+        strides = []
+        for x in self.forward(img_dummy):
+            strides.append(256 / x.shape[-2])
+        strides_tensor = torch.tensor(strides)
+        self.head.stride = nn.Parameter(strides_tensor, requires_grad=False)
+        self.head.initialize_biases()
 
     def forward(self, x):
         x = self.backbone(x)
@@ -36,10 +38,13 @@ class Yolo(AbstractTorchModel):
     def fuse(self):
         for module in self.modules():
             if isinstance(module, Conv) and hasattr(module, "norm"):
-                module.conv = self._fuse_conv_and_norm(module.conv, module.norm)
-                module.forward = module.fuse_forward
-                delattr(module, "norm")
+                self._fuse_module(module)
         return self
+
+    def _fuse_module(self, module):
+        module.conv = self._fuse_conv_and_norm(module.conv, module.norm)
+        module.forward = module.fuse_forward
+        delattr(module, "norm")
 
     @staticmethod
     def _fuse_conv_and_norm(conv, norm):

@@ -21,7 +21,7 @@ class BaseMetric:
         self.model = model
         self._on_init(**kwargs)
 
-    def _calculate_np(self, y_true: np.array, y_pred: np.array):
+    def _calculate_np(self, y_true: np.ndarray, y_pred: np.ndarray):
         """
         Calculate the metric using numpy arrays.
         Args:
