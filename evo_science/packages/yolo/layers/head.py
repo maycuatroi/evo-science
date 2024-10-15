@@ -14,11 +14,11 @@ class Head(nn.Module):
         super().__init__()
         self.nc = nc  # number of classes
         self.nl = len(filters)  # number of detection layers
-        self.ch = 16  # DFL channels
-        self.no = nc + self.ch * 4  # number of outputs per anchor
+        self.num_channels = 16  # DFL channels
+        self.num_outputs = nc + self.num_channels * 4  # number of outputs per anchor
         self.stride = nn.Parameter(torch.zeros(self.nl), requires_grad=False)  # strides computed during build
 
-        self.dfl = DFL(self.ch)
+        self.dfl = DFL(self.num_channels)
         self.cls_convs, self.box_convs = self._create_conv_layers(filters)
 
     def _create_conv_layers(self, filters):
@@ -30,7 +30,7 @@ class Head(nn.Module):
             tuple of two lists: classification and box branches
         """
         c1 = max(filters[0], self.nc)
-        c2 = max((filters[0] // 4, self.ch * 4))
+        c2 = max((filters[0] // 4, self.num_channels * 4))
 
         cls_convs = nn.ModuleList([self._create_cls_branch(x, c1) for x in filters])
         box_convs = nn.ModuleList([self._create_box_branch(x, c2) for x in filters])
@@ -62,7 +62,7 @@ class Head(nn.Module):
         return nn.Sequential(
             Conv(in_channels, out_channels, 3),
             Conv(out_channels, out_channels, 3),
-            nn.Conv2d(out_channels, 4 * self.ch, 1),
+            nn.Conv2d(out_channels, 4 * self.num_channels, 1),
         )
 
     def forward(self, x):
@@ -73,8 +73,8 @@ class Head(nn.Module):
 
         self.anchors, self.strides = (x.transpose(0, 1) for x in make_anchors(outputs, self.stride, 0.5))
 
-        x = torch.cat([output.view(outputs[0].shape[0], self.no, -1) for output in outputs], 2)
-        box, cls = x.split((self.ch * 4, self.nc), 1)
+        x = torch.cat([output.view(outputs[0].shape[0], self.num_outputs, -1) for output in outputs], 2)
+        box, cls = x.split((self.num_channels * 4, self.nc), 1)
 
         a, b = torch.split(self.dfl(box), 2, 1)
         a = self.anchors.unsqueeze(0) - a

@@ -16,7 +16,7 @@ class Yolo(AbstractTorchModel):
         super().__init__()
         self.backbone = DarkNet(width, depth)
         self.neck = DarkFPN(width, depth)
-
+        self.num_classes = num_classes
         self.head = Head(num_classes, (width[3], width[4], width[5]))
         self._initialize_head(width, num_classes)
         self.stride = self.head.stride
@@ -75,7 +75,7 @@ class Yolo(AbstractTorchModel):
     def get_criterion(self):
         return YoloLoss(
             num_classes=self.num_classes,
-            num_outputs=self.num_outputs,
-            num_channels=self.num_channels,
+            num_outputs=self.head.num_outputs,
+            num_channels=self.head.num_channels,
             stride=self.stride,
         )
