@@ -1,6 +1,8 @@
 from torch import nn
 import torch
 
+from evo_science.entities.metrics.iou import IOU
+
 
 class Assigner(nn.Module):
     def __init__(self, top_k=13, nc=80, alpha=1.0, beta=6.0, eps=1e-9):
@@ -43,7 +45,7 @@ class Assigner(nn.Module):
 
         pd_boxes = pd_bboxes.unsqueeze(1).expand(-1, num_max_boxes, -1, -1)[gt_mask]
         gt_boxes = gt_bboxes.unsqueeze(2).expand(-1, -1, na, -1)[gt_mask]
-        overlaps[gt_mask] = compute_iou(gt_boxes, pd_boxes).squeeze(-1).clamp_(0)
+        overlaps[gt_mask] = IOU.compute_iou(gt_boxes, pd_boxes).squeeze(-1).clamp_(0)
 
         align_metric = bbox_scores.pow(self.alpha) * overlaps.pow(self.beta)
 
