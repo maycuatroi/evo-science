@@ -38,7 +38,9 @@ The loss computation (`losses/yolo_loss.py`) consists of three primary component
 ##### 1. Classification Loss (BCE)
 Binary Cross-Entropy loss for object classification:
 
-$\mathcal{L}_{cls} = -\frac{1}{N} \sum_{i=1}^{N} \sum_{c=1}^{C} [y_{ic} \log(\hat{y}_{ic}) + (1-y_{ic})\log(1-\hat{y}_{ic})]$
+```math
+\mathcal{L}_{cls} = -\frac{1}{N} \sum_{i=1}^{N} \sum_{c=1}^{C} [y_{ic} \log(\hat{y}_{ic}) + (1-y_{ic})\log(1-\hat{y}_{ic})]
+```
 
 where:
 - $N$ is the number of predictions
@@ -49,7 +51,9 @@ where:
 ##### 2. Box Regression Loss (IoU)
 IoU-based loss for bounding box regression:
 
-$\mathcal{L}_{box} = 1 - \frac{|B_{pred} \cap B_{gt}|}{|B_{pred} \cup B_{gt}|}$
+```math
+\mathcal{L}_{box} = 1 - \frac{|B_{pred} \cap B_{gt}|}{|B_{pred} \cup B_{gt}|}
+```
 
 where:
 - $B_{pred}$ is the predicted bounding box
@@ -59,7 +63,9 @@ where:
 ##### 3. Distribution Focal Loss (DFL)
 Quality-aware loss for bounding box distribution:
 
-$\mathcal{L}_{dfl} = -\sum_{i=1}^{n} \sum_{j=1}^{K} y_{ij} \log(\hat{p}_{ij}) \cdot |j - \hat{j}|^\alpha$
+```math
+\mathcal{L}_{dfl} = -\sum_{i=1}^{n} \sum_{j=1}^{K} y_{ij} \log(\hat{p}_{ij}) \cdot |j - \hat{j}|^\alpha
+```
 
 where:
 - $K$ is the number of discretized levels
@@ -71,7 +77,9 @@ where:
 ##### Total Loss
 The final loss is a weighted combination of the three components:
 
-$\mathcal{L}_{total} = \lambda_{box}\mathcal{L}_{box} + \lambda_{cls}\mathcal{L}_{cls} + \lambda_{dfl}\mathcal{L}_{dfl}$
+```math
+\mathcal{L}_{total} = \lambda_{box}\mathcal{L}_{box} + \lambda_{cls}\mathcal{L}_{cls} + \lambda_{dfl}\mathcal{L}_{dfl}
+```
 
 where:
 - $\lambda_{box}$ is the box loss gain (default: 7.5)
@@ -81,7 +89,9 @@ where:
 ##### Target Assignment
 The dynamic target assignment process uses a quality-based matching strategy:
 
-$Q_{ij} = \sqrt{\max(0, \text{IoU}_{ij})} \cdot \exp(-\frac{d_{ij}^2}{2\sigma^2})$
+```math
+Q_{ij} = \sqrt{\max(0, \text{IoU}_{ij})} \cdot \exp(-\frac{d_{ij}^2}{2\sigma^2})
+```
 
 where:
 - $Q_{ij}$ is the matching quality between prediction $i$ and ground truth $j$
