@@ -15,7 +15,7 @@ class ExponentialMovingAverage:
     """
 
     def __init__(self, model: nn.Module, decay: float = 0.9999, tau: float = 2000, updates: int = 0):
-        self.ema_model = copy.deepcopy(model).eval()
+        self.ema_model: nn.Module = copy.deepcopy(model).eval()
         self.update_count = updates
         self.decay_fn = self._create_decay_function(decay, tau)
         self._freeze_ema_params()

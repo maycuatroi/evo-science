@@ -6,7 +6,7 @@ from evo_science.entities.models.abstract_model import AbstractModel
 
 class AbstractTorchModel(nn.Module, AbstractModel):
 
-    def load_weight(self, checkpoint_path: str):
+    def load_weights(self, checkpoint_path: str):
         """
         Load weights from a checkpoint file.
 
@@ -17,10 +17,11 @@ class AbstractTorchModel(nn.Module, AbstractModel):
             self: The model instance with loaded weights.
         """
         # Load the current model state
+        map_location = "cuda" if torch.cuda.is_available() else "cpu"
         model_state = self.state_dict()
 
         # Load the checkpoint
-        checkpoint = torch.load(checkpoint_path, map_location="cpu")
+        checkpoint = torch.load(checkpoint_path, map_location=map_location)
         checkpoint_state = checkpoint["model"].float().state_dict()
 
         # Filter and load matching weights

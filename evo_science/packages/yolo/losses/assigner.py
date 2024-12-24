@@ -1,5 +1,8 @@
 from torch import nn
 import torch
+from evo_science.entities.metrics.iou import IOU
+
+from evo_science.entities.metrics.iou import IOU
 
 
 class Assigner(nn.Module):
@@ -19,11 +22,9 @@ class Assigner(nn.Module):
         if num_max_boxes == 0:
             device = gt_bboxes.device
             return (
-                torch.full_like(pd_scores[..., 0], self.nc).to(device),
                 torch.zeros_like(pd_bboxes).to(device),
                 torch.zeros_like(pd_scores).to(device),
-                torch.zeros_like(pd_scores[..., 0]).to(device),
-                torch.zeros_like(pd_scores[..., 0]).to(device),
+                torch.zeros_like(pd_scores[..., 0]).to(device).bool(),
             )
 
         num_anchors = anc_points.shape[0]
@@ -43,7 +44,7 @@ class Assigner(nn.Module):
 
         pd_boxes = pd_bboxes.unsqueeze(1).expand(-1, num_max_boxes, -1, -1)[gt_mask]
         gt_boxes = gt_bboxes.unsqueeze(2).expand(-1, -1, na, -1)[gt_mask]
-        overlaps[gt_mask] = compute_iou(gt_boxes, pd_boxes).squeeze(-1).clamp_(0)
+        overlaps[gt_mask] = IOU.compute_iou(gt_boxes, pd_boxes).squeeze(-1).clamp_(0)
 
         align_metric = bbox_scores.pow(self.alpha) * overlaps.pow(self.beta)
 

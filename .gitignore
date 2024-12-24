@@ -133,3 +133,4 @@ dmypy.json
 .env
 .idea
 data/
+weights/
