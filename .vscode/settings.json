@@ -1,4 +1,3 @@
-
 {
     "python.envFile": "${workspaceFolder}/.env",
     "python.autoComplete.extraPaths": [
@@ -9,5 +8,6 @@
     ],
     "files.exclude": {
         "**/COCO": true
-    }
+    },
+    "python.terminal.activateEnvironment": true
 }
