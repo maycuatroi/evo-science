@@ -1,6 +1,7 @@
 import os
 import random
 from typing import Dict, List, Tuple
+from pathlib import Path
 
 import cv2
 import numpy as np
@@ -16,11 +17,30 @@ FORMATS = ("bmp", "dng", "jpeg", "jpg", "mpo", "png", "tif", "tiff", "webp")
 
 
 class CocoDataset(AbstractDataset):
-    def __init__(self, filenames: List[str], input_size: int, is_augment: bool, data_type: str = "train"):
+    def __init__(self, data_dir: str | Path, input_size: int = 640, is_augment: bool = True, data_type: str = "train"):
         self.data_type = data_type
         self.mosaic = is_augment
         self.augment = is_augment
         self.input_size = input_size
+
+        data_dir = Path(data_dir)
+
+        if data_type == "train":
+            data_folder_name = "train2017"
+        elif data_type == "val":
+            data_folder_name = "val2017"
+        else:
+            raise ValueError(f"Invalid data type: {data_type}")
+
+        image_dir = data_dir / data_folder_name
+
+        filenames = []
+        for fmt in FORMATS:
+            filenames.extend(list(image_dir.glob(f"*.{fmt}")))
+        filenames = [str(f) for f in filenames]
+
+        if not filenames:
+            raise ValueError(f"No valid images found in {image_dir}")
 
         labels = self.load_label(filenames)
         self.labels = list(labels.values())

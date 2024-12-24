@@ -9,5 +9,6 @@
     "files.exclude": {
         "**/COCO": true
     },
-    "python.terminal.activateEnvironment": true
+    "python.terminal.activateEnvironment": true,
+    "python.languageServer": "Pylance"
 }

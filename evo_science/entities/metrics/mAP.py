@@ -14,8 +14,7 @@ class MAP(AP):
     """
 
     def __init__(self, iou_thresholds: torch.Tensor, **kwargs):
-        super().__init__(**kwargs)
-        self.iou_thresholds = iou_thresholds
+        super().__init__(iou_thresholds=iou_thresholds, **kwargs)
 
     def _calculate_torch(self, y_true: torch.Tensor, y_pred: torch.Tensor):
         iou = self._calculate_iou(y_true[:, 1:], y_pred[:, :4])
