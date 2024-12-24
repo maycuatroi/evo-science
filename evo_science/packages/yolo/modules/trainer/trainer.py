@@ -14,7 +14,6 @@ from evo_science.entities.utils.average_meter import AverageMeter
 from evo_science.packages.yolo.modules.trainer.config import TrainerConfig
 from evo_science.packages.yolo.modules.trainer.primary_process import PrimaryProcessHandler
 from evo_science.packages.yolo.modules.validator import validate
-from evo_science.packages.yolo.modules.validator.validator import Validator
 
 
 class Trainer:
@@ -25,23 +24,8 @@ class Trainer:
         self.config = config
         self.primary = PrimaryProcessHandler(config.local_rank)
         self.best_map = 0
-        self.ema = None
-        self.optimizer = None
-        self.scheduler = None
-        self.dataset = None
-        self.loader = None
-        self.criterion = None
-        self.amp_scale = None
-        self.csv_writer = None
 
-    @staticmethod
-    def strip_optimizer(path: str):
-        """Strip optimizer states from checkpoint"""
-        x = torch.load(path, map_location=torch.device("cpu"))
-        x["model"].half()
-        for p in x["model"].parameters():
-            p.requires_grad = False
-        torch.save(x, path)
+        self.setup()
 
     def setup(self):
         """Initialize training components"""
@@ -52,6 +36,19 @@ class Trainer:
         self._setup_distributed()
         self._setup_training_tools()
         self._setup_csv_writer()
+
+    def _setup_ema(self):
+        """Setup Exponential Moving Average model"""
+        self.ema = self.primary.run(lambda: ExponentialMovingAverage(self.model))
+
+    @staticmethod
+    def strip_optimizer(path: str):
+        """Strip optimizer states from checkpoint"""
+        x = torch.load(path, map_location=torch.device("cpu"))
+        x["model"].half()
+        for p in x["model"].parameters():
+            p.requires_grad = False
+        torch.save(x, path)
 
     def _collect_parameters(self) -> Tuple[List[nn.Parameter], List[nn.Parameter], List[nn.Parameter]]:
         """Collect model parameters grouped by type"""
@@ -94,10 +91,6 @@ class Trainer:
 
         lr_lambda = lambda x: ((1 - x / self.config.epochs) * (1.0 - self.config.lrf) + self.config.lrf)
         self.scheduler = torch.optim.lr_scheduler.LambdaLR(self.optimizer, lr_lambda, last_epoch=-1)
-
-    def _setup_ema(self):
-        """Setup Exponential Moving Average model"""
-        self.ema = self.primary.run(lambda: ExponentialMovingAverage(self.model))
 
     def _setup_distributed(self):
         """Setup distributed training if enabled"""
@@ -183,7 +176,7 @@ class Trainer:
 
     def _save_checkpoint(self, is_best: bool):
         """Save model checkpoint"""
-        save = {"model": copy.deepcopy(self.ema.ema).half()}
+        save = {"model": copy.deepcopy(self.ema.ema_model).half()}
         torch.save(save, "./weights/last.pt")
         if is_best:
             torch.save(save, "./weights/best.pt")
@@ -221,7 +214,6 @@ class Trainer:
 
     def train(self):
         """Main training loop"""
-        self.setup()
         accumulate = max(round(64 / (self.config.batch_size * self.config.world_size)), 1)
 
         for epoch in range(self.config.epochs):
