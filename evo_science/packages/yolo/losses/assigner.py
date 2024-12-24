@@ -2,6 +2,8 @@ from torch import nn
 import torch
 from evo_science.entities.metrics.iou import IOU
 
+from evo_science.entities.metrics.iou import IOU
+
 
 class Assigner(nn.Module):
     def __init__(self, top_k=13, nc=80, alpha=1.0, beta=6.0, eps=1e-9):
